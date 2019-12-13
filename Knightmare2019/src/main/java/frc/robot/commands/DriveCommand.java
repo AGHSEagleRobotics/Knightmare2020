@@ -8,11 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class DriveCommand extends Command {
   public DriveCommand() {
+
+
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+     requires(Robot.driveTrainSubsystem);
   }
 
   // Called just before this Command runs the first time
