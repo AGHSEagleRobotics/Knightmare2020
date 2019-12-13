@@ -68,14 +68,54 @@ public class DriveTrainSubsystem extends Subsystem {
   // Public Methods
   //========================================================================
   
+  /**
+   * The arcadeDrive method supports single stick control, where forward/backward on
+   * the stick controls forward/backward motion, and left/right on the stick
+   * controls rotation.This can be implemented using two control sticks as well, where one
+   * stick controls forward/backward motion, and the other controls rotation.
+   * <p>
+   * The rotation is based around the center of the robot.
+   * The calculated values will be squared to decrease sensitivity at low speeds.
+   * 
+   * @param  speed  The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @param  rotation  The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
+   * @return      void
+   */
   public void arcadeDrive(double speed, double rotation) {
     diffDrive.arcadeDrive(speed, rotation);
   }
 
+  /**
+   * The cheesyDrive method supports single stick control, where forward/backward on
+   * the stick controls forward/backward motion, and left/right on the stick
+   * controls rotation.This can be implemented using two control sticks as well, where one
+   * stick controls forward/backward motion, and the other controls rotation.
+   * <p>
+   * The rotation argument controls the curvature of the robot's path rather than its
+   * rate of heading change. This makes the robot more controllable at high speeds.
+   * Also handles the robot's quick turn functionality - "quick turn" overrides
+   * constant-curvature turning for turn-in-place maneuvers.
+   * 
+   * @param  speed  The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @param  rotation  The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
+   * @param  isQuickTurn  If set, overrides constant-curvature turning for turn-in-place maneuvers.
+   * @return      void
+   */
   public void cheesyDrive( double speed, double rotation, boolean isQuickTurn ){
       diffDrive.curvatureDrive( speed, rotation, isQuickTurn);
   }
 
+  /**
+   * The tankDrive method supports double stick control, where forward/backward on
+   * the left stick controls forward/backward motion on the left side, and forward/backward on
+   * the right stick controls forward/backward motion on the right side.
+   * <p>
+   * The calculated values will be squared to decrease sensitivity at low speed
+   * 
+   * @param  leftSpeed  The robot's left side speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @param  rightSpeed  The robot's right side speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @return      void
+   */
   public void tankDrive( double leftSpeed, double rightSpeed ){
       diffDrive.tankDrive( leftSpeed, rightSpeed );
   }
