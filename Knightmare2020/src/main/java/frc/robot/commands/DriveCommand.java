@@ -26,6 +26,10 @@ public class DriveCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    double driveRightXAxis = Robot.oi.getDriveRightXAxis();
+    double driveLeftYAxis = Robot.oi.getDriveLeftYAxis();;
+    boolean AButton = Robot.oi.getAButton();
+    Robot.driveTrainSubsystem.cheesyDrive(driveLeftYAxis, driveRightXAxis, AButton );
   }
 
   // Make this return true when this Command no longer needs to run execute()
