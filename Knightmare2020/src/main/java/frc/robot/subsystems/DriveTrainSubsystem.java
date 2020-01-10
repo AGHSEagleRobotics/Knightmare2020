@@ -10,16 +10,16 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.DriveCommand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class DriveTrainSubsystem extends Subsystem {
+public class DriveTrainSubsystem extends SubsystemBase {
   
   // Put methods for controlling this subsystem here. 
   // Call Public Methods from Commands.
@@ -58,11 +58,11 @@ public class DriveTrainSubsystem extends Subsystem {
   // FRC Default Methods
   //========================================================================
   
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-     setDefaultCommand(new DriveCommand());
-  }
+  // @Override
+  // public void initDefaultCommand() {
+  //   // Set the default command for a subsystem here.
+  //    setDefaultCommand(new DriveCommand());
+  // }
 
   //========================================================================
   // Public Methods

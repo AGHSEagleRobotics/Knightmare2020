@@ -7,45 +7,41 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class DriveCommand extends Command {
-  public DriveCommand() {
+public class DriveCommand extends CommandBase {
+  private final DriveTrainSubsystem m_subsystem;
 
-
-    // Use requires() here to declare subsystem dependencies
-     requires(Robot.driveTrainSubsystem);
+  public DriveCommand( DriveTrainSubsystem subsystem) {
+    m_subsystem = subsystem;
+    addRequirements(subsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     double driveRightXAxis = Robot.oi.getDriveRightXAxis();
-    double driveLeftYAxis = Robot.oi.getDriveLeftYAxis();;
+    double driveLeftYAxis = Robot.oi.getDriveLeftYAxis();
     boolean AButton = Robot.oi.getAButton();
-    Robot.driveTrainSubsystem.cheesyDrive(driveLeftYAxis, driveRightXAxis, AButton );
+
+    Robot.driveTrainSubsystem.cheesyDrive(driveLeftYAxis, driveRightXAxis, AButton);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void end( boolean interrupted) {
   }
 }
