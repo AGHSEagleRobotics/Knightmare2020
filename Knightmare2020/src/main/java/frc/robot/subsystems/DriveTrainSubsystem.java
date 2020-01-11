@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,36 +7,30 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
 public class DriveTrainSubsystem extends SubsystemBase {
   
-  // Put methods for controlling this subsystem here. 
-  // Call Public Methods from Commands.
-
-  private final WPI_VictorSPX leftFront = new WPI_VictorSPX(RobotMap.leftVictor);
-  private final WPI_VictorSPX leftBack = new WPI_VictorSPX(RobotMap.leftTalon);
-  private final WPI_TalonSRX rightFront = new WPI_TalonSRX(RobotMap.rightTalon);
-  private final WPI_TalonSRX rightBack = new WPI_TalonSRX(RobotMap.rightVictor);
-
+  private final WPI_VictorSPX leftFront = new WPI_VictorSPX(Constants.leftVictor);
+  private final WPI_TalonSRX leftBack = new WPI_TalonSRX(Constants.leftTalon);
+  private final WPI_TalonSRX rightFront = new WPI_TalonSRX(Constants.rightTalon);
+  private final WPI_VictorSPX rightBack = new WPI_VictorSPX(Constants.rightVictor);
+  
   private DifferentialDrive diffDrive;
 
-  //========================================================================
-  // Constructor
-  //========================================================================
-
+  /**
+   * Creates a new DriveTrainSubsystem.
+   */
   public DriveTrainSubsystem() {
-    
+
     // Uncomment which brake mode we want the motors to be in
     //setCoast();  
     setBrake();
@@ -54,20 +48,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     diffDrive.setDeadband( 0.2 );
   }
 
-  //========================================================================
-  // FRC Default Methods
-  //========================================================================
-  
-  // @Override
-  // public void initDefaultCommand() {
-  //   // Set the default command for a subsystem here.
-  //    setDefaultCommand(new DriveCommand());
-  // }
-
-  //========================================================================
-  // Public Methods
-  //========================================================================
-  
   /**
    * The arcadeDrive method supports single stick control, where forward/backward on
    * the stick controls forward/backward motion, and left/right on the stick
@@ -151,9 +131,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightBack.setNeutralMode(NeutralMode.Coast);
   }
 
-
-
- 
-
- 
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 }
