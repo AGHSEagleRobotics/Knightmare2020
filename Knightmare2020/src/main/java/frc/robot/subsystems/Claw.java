@@ -16,13 +16,13 @@ import frc.robot.Constants;
 public class Claw extends SubsystemBase {
   
   private WPI_VictorSPX clawMotor;
-
+  private DigitalInput clawLimitSwitch;
   /**
    * Creates a new Claw.
    */
   public Claw() {
     clawMotor = new WPI_VictorSPX(Constants.clawMotor);
-
+    clawLimitSwitch = new DigitalInput(Constants.clawDigitalInput);
   }
 
   public void setClawMotor(double speed) {
@@ -37,6 +37,15 @@ public class Claw extends SubsystemBase {
     }
 
   }
+  
+   /**
+   * @return the clawLimitSwitch
+   */
+  public boolean getClawLimitSwitch() {
+    return clawLimitSwitch.get();
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

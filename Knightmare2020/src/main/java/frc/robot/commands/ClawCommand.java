@@ -12,7 +12,8 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ClawCommand extends CommandBase {
-  private DigitalInput clawLimitSwitch;
+
+
   /**
    * Creates a new ClawCommand.
    */
@@ -23,14 +24,15 @@ public class ClawCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    clawLimitSwitch = new DigitalInput(Constants.clawDigitalInput);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-  }
+
+    }
+  
 
   // Called once the command ends or is interrupted.
   @Override
