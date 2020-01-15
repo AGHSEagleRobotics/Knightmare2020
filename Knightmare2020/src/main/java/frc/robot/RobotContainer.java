@@ -10,9 +10,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.ClawCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,14 +28,19 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
 
+  private final Claw m_clawSubsystem = new Claw();
+
   private final DriveCommand m_driveCommand = new DriveCommand(m_DriveTrainSubsystem);
 
   private final Command m_autoCommand = new DriveCommand(m_DriveTrainSubsystem);
+
+  private final Command m_clawCommand = new ClawCommand(m_clawSubsystem);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
 
     m_DriveTrainSubsystem.setDefaultCommand(m_driveCommand);
     
@@ -69,7 +78,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    XboxController driveXboxController = new XboxController(Constants.driveXboxController);
+    new JoystickButton(driveController, XboxController.Button.kB.value)
+        .toggleWhenPressed(m_clawCommand);
   }
 
   /**
