@@ -10,10 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.ClawCommand;
+import frc.robot.commands.ClawIntakeCommand;
+import frc.robot.commands.ClawShooterCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -28,13 +28,15 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
 
-  private final Claw m_clawSubsystem = new Claw();
+  private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
 
   private final DriveCommand m_driveCommand = new DriveCommand(m_DriveTrainSubsystem);
 
   private final Command m_autoCommand = new DriveCommand(m_DriveTrainSubsystem);
 
-  private final Command m_clawCommand = new ClawCommand(m_clawSubsystem);
+  private final Command m_clawIntakeCommand = new ClawIntakeCommand(m_clawSubsystem);
+
+  private final Command m_clawShooterCommand = new ClawShooterCommand(m_clawSubsystem);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -78,8 +80,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    new JoystickButton(driveController, XboxController.Button.kA.value)
+        .whenPressed(m_clawIntakeCommand);
     new JoystickButton(driveController, XboxController.Button.kB.value)
-        .toggleWhenPressed(m_clawCommand);
+        .cancelWhenPressed(m_clawIntakeCommand);
+    new JoystickButton(driveController, XboxController.Button.kX.value)
+        .whenPressed(m_clawShooterCommand.withTimeout(1));
   }
 
   /**

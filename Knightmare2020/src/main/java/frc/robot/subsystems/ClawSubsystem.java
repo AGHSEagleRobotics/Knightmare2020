@@ -13,14 +13,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Claw extends SubsystemBase {
+public class ClawSubsystem extends SubsystemBase {
   
-  private WPI_VictorSPX clawMotor;
-  private DigitalInput clawLimitSwitch;
+  private final WPI_VictorSPX clawMotor;
+  private final DigitalInput clawLimitSwitch;
+
   /**
    * Creates a new Claw.
    */
-  public Claw() {
+  public ClawSubsystem() {
     clawMotor = new WPI_VictorSPX(Constants.clawMotor);
     clawLimitSwitch = new DigitalInput(Constants.clawDigitalInput);
   }
@@ -29,22 +30,31 @@ public class Claw extends SubsystemBase {
     clawMotor.set(speed);
   }
 
-  public void setClawMotorAlternate(boolean isOn) {
-    if(isOn){
+  public void setClawForwardAlternate(boolean isOn) {
+    if (isOn) {
       clawMotor.set(0.7);
-    }else{
+    } else {
       clawMotor.set(0);
     }
 
   }
-  
+
+  public void setClawReverseAlternate(boolean isOn) {
+      if (isOn) {
+      clawMotor.set(-0.7);
+    } else {
+      clawMotor.set(0);
+    }
+
+  }
+
    /**
    * @return the clawLimitSwitch
    */
   public boolean getClawLimitSwitch() {
     return clawLimitSwitch.get();
   }
-
+  
 
   @Override
   public void periodic() {
