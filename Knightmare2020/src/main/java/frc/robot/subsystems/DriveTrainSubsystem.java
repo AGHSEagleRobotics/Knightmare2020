@@ -39,7 +39,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     //useFrontWheelsOnly(); //2 motor controllers
     //useSpeedControllerGroups(); //2 speed controller groups
     useFollowMode(); //Follow mode, links sameside motors
-
+    diffDrive = new DifferentialDrive(leftFront, rightFront);
     // Setup differential drive
     addChild("DifferentialDrive",diffDrive);
     diffDrive.setSafetyEnabled(true);
