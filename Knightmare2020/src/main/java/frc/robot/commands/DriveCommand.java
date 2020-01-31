@@ -19,7 +19,7 @@ public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrainSubsystem m_subsystem;
   private boolean m_precisionModeFlag = false;
-  private boolean m_lastAButton = false;
+  private boolean m_lastLeftStickButton = false;
 
   /**
    * Creates a new DriveCommand. 
@@ -42,10 +42,10 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     double driveRightXAxis = RobotContainer.getDriveRightXAxis();
     double driveLeftYAxis = RobotContainer.getDriveLeftYAxis();
-    boolean AButton = RobotContainer.getAButton();
+    boolean LeftStickButton = RobotContainer.getLeftStickButton();
     
     // Toggles  between precision mode if A button pressed
-    if(AButton && !m_lastAButton){
+    if(LeftStickButton && !m_lastLeftStickButton){
       m_precisionModeFlag = !m_precisionModeFlag;
     }
 
@@ -55,7 +55,7 @@ public class DriveCommand extends CommandBase {
 
     m_subsystem.cheesyDrive(driveLeftYAxis, driveRightXAxis, m_precisionModeFlag);
 
-    m_lastAButton = AButton;
+    m_lastLeftStickButton = LeftStickButton;
   }
 
   // Called once the command ends or is interrupted.

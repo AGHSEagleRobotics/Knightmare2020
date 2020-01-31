@@ -71,7 +71,9 @@ public class RobotContainer {
     return driveController.getAButton();
   }
 
-  
+  public static boolean getLeftStickButton() {
+    return driveController.getStickButton(Hand.kLeft);
+  }
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
