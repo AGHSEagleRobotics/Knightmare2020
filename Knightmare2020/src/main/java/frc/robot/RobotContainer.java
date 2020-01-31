@@ -38,6 +38,10 @@ public class RobotContainer {
 
   private final Command m_clawShooterCommand = new ClawShooterCommand(m_clawSubsystem);
 
+  public static enum DPad{
+    UP, RIGHT, DOWN, LEFT, NONE
+  }
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -73,6 +77,24 @@ public class RobotContainer {
 
   public static boolean getLeftStickButton() {
     return driveController.getStickButton(Hand.kLeft);
+  }
+
+  public static DPad getPOVLeftValue(){
+    int pOV = driveController.getPOV();
+    // System.out.println( pOV );
+    if( pOV == 0 || pOV == 45 ){
+      return DPad.UP;
+    }else if( pOV == 90 || pOV == 135 ) {
+      return DPad.RIGHT;
+    }
+    else if( pOV == 180 || pOV == 225 ) {
+      return DPad.DOWN;
+    }
+    else if( pOV == 270 || pOV == 315 ) {
+      return DPad.LEFT;
+    }else{
+      return DPad.NONE;
+    }
   }
 
   /**

@@ -8,7 +8,10 @@
 package frc.robot.commands;
 
 import frc.robot.RobotContainer;
+import frc.robot.RobotContainer.DPad;
 import frc.robot.subsystems.DriveTrainSubsystem;
+
+import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -18,8 +21,27 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrainSubsystem m_subsystem;
+  
+  private final double OFF_SPEED_MODE = 0.0; 
+  private final double LOW_SPEED_MODE = 0.5; 
+  private final double MED_SPEED_MODE = 0.7; 
+  private final double HIGH_SPEED_MODE = 1.0; 
+
+
+  private enum speedMode{
+    LOW, MED, HIGH, OFF
+  }
+
   private boolean m_precisionModeFlag = false;
   private boolean m_lastLeftStickButton = false;
+  // starting with low speed for incrementing
+  private DPad dPad = DPad.LEFT;
+
+  private speedMode m_curSpeedMode = speedMode.LOW;
+
+  private Timer timer = new Timer();
+
+
 
   /**
    * Creates a new DriveCommand. 
@@ -35,6 +57,7 @@ public class DriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,11 +72,36 @@ public class DriveCommand extends CommandBase {
       m_precisionModeFlag = !m_precisionModeFlag;
     }
 
-    // scales the speed of the axis
-    driveRightXAxis *= 0.7;
-    driveLeftYAxis *= 0.5;
+    dPad = RobotContainer.getPOVLeftValue();
+    if( dPad == DPad.LEFT ){
+      m_curSpeedMode = speedMode.LOW; // low speed drive function
+    }else if( dPad == DPad.UP ) {
+      m_curSpeedMode = speedMode.MED; // medium speed drive function
+    }else if( dPad == DPad.RIGHT ){
+      m_curSpeedMode = speedMode.HIGH; // high speed drive function
+    }else if( dPad == DPad.DOWN){
+      m_curSpeedMode = speedMode.OFF;
+    }
 
-    m_subsystem.cheesyDrive(driveLeftYAxis, driveRightXAxis, m_precisionModeFlag);
+    if( m_curSpeedMode == speedMode.LOW ){
+      driveLeftYAxis *= LOW_SPEED_MODE;
+      driveRightXAxis *= LOW_SPEED_MODE;
+    }else if( m_curSpeedMode == speedMode.MED){
+      driveLeftYAxis *= MED_SPEED_MODE;
+      driveRightXAxis *= MED_SPEED_MODE;
+    }else if( m_curSpeedMode == speedMode.HIGH){
+      driveLeftYAxis *= HIGH_SPEED_MODE;
+      driveRightXAxis *= HIGH_SPEED_MODE;
+    }else if( m_curSpeedMode == speedMode.OFF){
+      driveLeftYAxis = OFF_SPEED_MODE;
+      driveRightXAxis = OFF_SPEED_MODE;
+    }
+
+    // if( timer.hasPeriodPassed(5.0) ){
+    //   System.out.println( "DPad Value: " + dPad + "\t Speed Mode:  " + m_curSpeedMode );
+    // }
+
+    m_subsystem.cheesyDrive(driveLeftYAxis, -driveRightXAxis, m_precisionModeFlag);
 
     m_lastLeftStickButton = LeftStickButton;
   }
@@ -61,6 +109,7 @@ public class DriveCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    timer.stop();
   }
 
   // Returns true when the command should end.
