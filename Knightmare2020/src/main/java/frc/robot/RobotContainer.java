@@ -7,6 +7,13 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -42,6 +49,10 @@ public class RobotContainer {
     UP, RIGHT, DOWN, LEFT, NONE
   }
 
+  private UsbCamera m_cameraIntake;
+  private HttpCamera m_limeLight;
+  private VideoSink cameraSelection;
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -49,7 +60,16 @@ public class RobotContainer {
 
 
     m_DriveTrainSubsystem.setDefaultCommand(m_driveCommand);
-    
+    m_cameraIntake = CameraServer.getInstance().startAutomaticCapture();
+    // m_cameraIntake.setConnectionStrategy(strategy);
+    m_limeLight = new HttpCamera("limelight", "http://limelight.local:5800/stream.mjpg");
+    currVideoSource = m_cameraIntake;
+
+    cameraSelection = CameraServer.getInstance().getServer();
+    System.out.println( "\n\n\n\n\n\ncamera selection assigned the table thang\n\n\n\n\n\n" );
+    cameraSelection.setSource(m_cameraIntake);
+    System.out.println( "\n\n\n\n\n\ncamera selection not null\n\n\n\n\n\n" );
+
     configureButtonBindings();
   }
 
@@ -112,6 +132,22 @@ public class RobotContainer {
         .cancelWhenPressed(m_clawIntakeCommand);
     new JoystickButton(driveController, XboxController.Button.kX.value)
         .whenPressed(m_clawShooterCommand.withTimeout(1));
+    new JoystickButton(driveController, XboxController.Button.kBack.value).whenPressed(this::switchVideoSource );
+  }
+
+  private VideoSource currVideoSource;
+
+  private void switchVideoSource() {
+    if( currVideoSource.equals(m_cameraIntake) ){
+      currVideoSource = m_limeLight;
+      System.out.println("Switched the video Source to limelight");
+    }else if( currVideoSource.equals(m_limeLight)) {
+      currVideoSource = m_cameraIntake;
+      System.out.println("Switched the video Source to USB camera");
+    }
+    System.out.println("returned video source");
+    cameraSelection.setSource(currVideoSource);
+
   }
 
   /**

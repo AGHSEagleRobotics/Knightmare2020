@@ -7,11 +7,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.Rumble;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,7 +26,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private DriveCommand m_driveCommand;
   private DriveTrainSubsystem m_driveTrainSubsystem;
-
+  private Rumble m_rumble;
   private RobotContainer m_robotContainer;
 
   /**
@@ -35,6 +38,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    
+    // CameraServer.getInstance().startAutomaticCapture();
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
+  
   }
 
   /**
@@ -58,6 +66,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
   @Override
@@ -97,6 +106,9 @@ public class Robot extends TimedRobot {
     m_driveTrainSubsystem = new DriveTrainSubsystem();
     m_driveCommand = new DriveCommand( m_driveTrainSubsystem );
 
+    m_rumble = new Rumble( RobotContainer.driveController);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2);
+
   }
 
   /**
@@ -112,6 +124,16 @@ public class Robot extends TimedRobot {
 
     if(m_driveCommand != null ) {
       m_driveCommand.schedule();
+    }
+
+    if( RobotContainer.getAButton() ){
+      m_rumble.rumblePulse(Rumble.RumbleSide.BOTH);
+    }
+    if( RobotContainer.driveController.getBButton() ){
+      m_rumble.rumblePulse(Rumble.RumbleSide.LEFT);
+    }
+    if( RobotContainer.driveController.getXButton() ){
+      m_rumble.rumblePulse(Rumble.RumbleSide.RIGHT);
     }
   }
 
