@@ -66,9 +66,7 @@ public class RobotContainer {
     currVideoSource = m_cameraIntake;
 
     cameraSelection = CameraServer.getInstance().getServer();
-    System.out.println( "\n\n\n\n\n\ncamera selection assigned the table thang\n\n\n\n\n\n" );
     cameraSelection.setSource(m_cameraIntake);
-    System.out.println( "\n\n\n\n\n\ncamera selection not null\n\n\n\n\n\n" );
 
     configureButtonBindings();
   }
@@ -140,12 +138,9 @@ public class RobotContainer {
   private void switchVideoSource() {
     if( currVideoSource.equals(m_cameraIntake) ){
       currVideoSource = m_limeLight;
-      System.out.println("Switched the video Source to limelight");
     }else if( currVideoSource.equals(m_limeLight)) {
       currVideoSource = m_cameraIntake;
-      System.out.println("Switched the video Source to USB camera");
     }
-    System.out.println("returned video source");
     cameraSelection.setSource(currVideoSource);
 
   }
