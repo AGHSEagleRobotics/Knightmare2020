@@ -103,8 +103,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_driveTrainSubsystem = new DriveTrainSubsystem();
-    m_driveCommand = new DriveCommand( m_driveTrainSubsystem );
+    // m_driveTrainSubsystem = new DriveTrainSubsystem();
+    // m_driveCommand = new DriveCommand( m_driveTrainSubsystem );
 
     m_rumble = new Rumble( RobotContainer.driveController);
     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2);

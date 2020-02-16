@@ -12,11 +12,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 public class DriveTrainSubsystem extends SubsystemBase {
+  private final double secondsToFull = 2;
   
   private final WPI_VictorSPX leftFront = new WPI_VictorSPX(Constants.leftVictor);
   private final WPI_TalonSRX leftBack = new WPI_TalonSRX(Constants.leftTalon);
@@ -29,16 +32,21 @@ public class DriveTrainSubsystem extends SubsystemBase {
    * Creates a new DriveTrainSubsystem.
    */
   public DriveTrainSubsystem() {
-
+    leftFront.configFactoryDefault();
+    leftBack.configFactoryDefault();
+    rightBack.configFactoryDefault();
+    rightFront.configFactoryDefault();
     // Uncomment which brake mode we want the motors to be in
     //setCoast();  
     setBrake();
       
     // Uncomment which drive mode we want to use at the moment,
-    //useFrontWheelsOnly(); //2 motor controllers
     //useSpeedControllerGroups(); //2 speed controller groups
     useFollowMode(); //Follow mode, links sameside motors
-    diffDrive = new DifferentialDrive(leftFront, rightFront);
+
+    // rampAccel();
+
+    // diffDrive = new DifferentialDrive(leftFront, rightFront);
     // Setup differential drive
     addChild("DifferentialDrive",diffDrive);
     diffDrive.setSafetyEnabled(true);
@@ -109,6 +117,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightBack.follow( rightFront );
 
     diffDrive = new DifferentialDrive( leftFront, rightFront );
+  }
+
+  private void useSpeedControllerGroups() {
+    SpeedControllerGroup leftGroup = new SpeedControllerGroup( leftFront, leftBack );
+    SpeedControllerGroup rightGroup = new SpeedControllerGroup( rightFront, rightBack );
+
+    diffDrive = new DifferentialDrive( leftGroup, rightGroup );
+  }
+
+  private void rampAccel(){
+    leftBack.configOpenloopRamp( secondsToFull );
+    leftBack.configOpenloopRamp( secondsToFull );
+    leftBack.configOpenloopRamp( secondsToFull );
+    leftBack.configOpenloopRamp( secondsToFull );
   }
 
 

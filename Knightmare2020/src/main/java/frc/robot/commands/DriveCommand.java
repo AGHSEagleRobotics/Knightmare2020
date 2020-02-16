@@ -100,7 +100,7 @@ public class DriveCommand extends CommandBase {
     // if( timer.hasPeriodPassed(5.0) ){
     //   System.out.println( "DPad Value: " + dPad + "\t Speed Mode:  " + m_curSpeedMode );
     // }
-
+    // System.out.println(driveLeftYAxis + "\t\t" + driveRightXAxis );
     m_subsystem.cheesyDrive(driveLeftYAxis, -driveRightXAxis, m_precisionModeFlag);
 
     m_lastLeftStickButton = LeftStickButton;
@@ -109,6 +109,7 @@ public class DriveCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println( "**************** Drive ended **********\t" + interrupted);
     timer.stop();
   }
 
